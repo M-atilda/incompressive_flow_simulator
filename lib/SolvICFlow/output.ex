@@ -7,14 +7,12 @@
 defmodule SolvICFlow.Output do
   @name :g_output_server
 
-  def emitFlowData %SolvICFlow.FlowData{u: x_vel,
-                                        v: y_vel,
-                                        w: z_vel,
-                                        p: pressure}do
+  def emitFlowData %SolvICFlow.FlowData{u: _x_vel,
+                                        v: _y_vel,
+                                        p: _pressure}=flow_data do
     #TODO: padding
-    velocity_status = List.zip List.flatten(x_vel), List.flatten(y_vel), List.flatten(z_vel)
-    flow_status = List.zip velocity_status, pressure
-    send :global.whereis_name(@name), {:emit, flow_status, self}
+    send :global.whereis_name(@name), {:emit, flow_data, self}
+    flow_data
   end
 
   def emitError message do
@@ -29,12 +27,38 @@ defmodule SolvICFlow.Output do
 
   def outputServer output_callbcack do
     receive do
-      {:emit, flow_status, _} ->
-        output_callbcack.({:ok, flow_status})
+      {:emit, flow_data, _} ->
+        output_callbcack.({:ok, flow_data})
       {:error, message, _} ->
         output_callbcack.({:error, message})
     end
     outputServer output_callbcack
+  end
+
+
+  def sampleCallbackImpl %SolvICFlow.FlowData{u: x_vel,
+                                              v: y_vel,
+                                              p: pressure}, {x_size, y_size}, space do
+    x_step = x_size / space
+    y_step = y_size / space
+
+    IO.puts "[Result] U field\n#{inspect genMiniField(x_vel, x_step, y_step, space)}"
+    IO.puts "[Result] V field\n#{inspect genMiniField(y_vel, x_step, y_step, space)}"
+    IO.puts "[Result] P field\n#{inspect genMiniField(pressure, x_step, y_step, space)}"
+  end
+  defp genMiniField field, x_step, y_step, space do
+    half_space = round(space / 2)
+    for j <- 1..round(y_step-2) do
+      for i <- 1..round(x_step-2) do
+        getAver field, {i*space+half_space, j*space+half_space}
+      end
+    end
+  end
+  defp getAver f, {i, j} do
+    id(f, {i,j}) / 4 + (id(f, {i,j-1}) + id(f, {i,j+1}) + id(f, {i-1,j}) + id(f, {i+1,j})) / 8 + (id(f, {i-1,j-1}) + id(f, {i-1,j+1}) + id(f, {i+1,j-1}) + id(f, {i+1,j+1})) / 16
+  end
+  defp id field, {i,j} do
+    Enum.at(Enum.at(field, j), i)
   end
 
 end #SolvICFlow.Output

@@ -11,5 +11,5 @@ defmodule SolvICFlow.FlowData do
   #! p
   #! boundary_info %{:u => [%BCInfo], ...}
   #! info %{}
-  defstruct u: [], v: [], w: [], p: [], bc: nil, info: nil
+  defstruct u: [], v: [], p: [], bc: nil, info: nil
 end # SolvICFlow.FlowData

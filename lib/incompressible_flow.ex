@@ -27,10 +27,13 @@ defmodule IncompressibleFlow do
   defp solvFlowRecurse ite_times, flow_data, max_ite_times do
     #NOTE: this functin's flow is a bit strange for tail recursion
     if ite_times < max_ite_times do
+      IO.puts "(F) #{round(ite_times / max_ite_times * 100)}% #{inspect DateTime.utc_now}"
       {result, new_flow_data} = try do
-                                  {true, solvStepFlow(flow_data)}
+                                  {true, solvFlowStep(flow_data)}
                                 rescue
-                                  _ -> {false, nil}
+                                  err_msg ->
+                                    IO.inspect err_msg
+                                  {false, nil}
                                 end
       if result do
         solvFlowRecurse ite_times+1, new_flow_data, max_ite_times
@@ -42,7 +45,7 @@ defmodule IncompressibleFlow do
     end
   end
 
-  defp solvStepFlow flow_data do
+  defp solvFlowStep flow_data do
     flow_data
     |> SolvICFlow.Velocity.update
     |> SolvICFlow.Pressure.update

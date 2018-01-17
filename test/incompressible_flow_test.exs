@@ -1,24 +1,37 @@
 defmodule IncompressibleFlowTest do
   use ExUnit.Case
   doctest IncompressibleFlow
+  @tag timeout: 10800000
 
   test "main routine" do
+    CalcPServer.genCalcServer %{:max_ite_times => 100,
+                                :error_p => 0.0001,
+                                :omega => 1,
+                                :max_res_ratio => 0.5}
+    CalcVServer.genCalcServer(:u)
+    CalcVServer.genCalcServer(:v)
     output_callbcack_fn = fn({simbol, data}) ->
       case simbol do
         :ok ->
-          IO.inspect data
+          IO.puts "[Info] current data."
+          SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
         :error ->
-          IO.puts data
+          IO.puts "[Error] emitError is called."
+          IO.inspect data
       end end
-    IncompressibleFlow.main %{:parameter => %{:width => 1,
-                                              :height => 1,
-                                              :depth => 1,
-                                              :space_step => 0.1,
-                                              :CFL_number => 0.2,
-                                              :init_velocity => [1, 0, 0],
-                                              :init_pressure => 1,
-                                              :Re => 50,
-                                              :bc_strings => ["u=0;x=1"]},
-                              :calc_info => %{:max_ite_times => 10}}, output_callbcack_fn
+    {status, ite_times, flow_data} = IncompressibleFlow.main %{
+      :parameter => %{:width => 40,
+                      :height => 20,
+                      :space_step => 0.1,
+                      :CFL_number => 0.2,
+                      :init_velocity => [1, 0],
+                      :init_pressure => 1,
+                      :Re => 50,
+                      :bc_strings => ["u=1;x=0", "p=0;x=0", "u=0;x>4,x<8,y>4,y<8", "v=0;x>4,x<8,y>4,y<8"]},
+      :calc_info => %{:max_ite_times => 500}}, output_callbcack_fn
+    
+    IO.inspect flow_data
+    IO.inspect status
+    IO.inspect ite_times
   end
 end
