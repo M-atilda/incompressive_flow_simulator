@@ -10,19 +10,7 @@ defmodule IncompressibleFlow do
       :world
 
   """
-
-
-  defmodule IncompressiveFlow.FlowData do
-    #struct FlowData
-    #brief  all information about flow's (and filed's) status
-    #! u [[float]]
-    #! v
-    #! w
-    #! p
-    #! boundary_info %{:u => [%BCInfo], ...}
-    #! info %{}
-    defstruct u: [], v: [], w: [], p: [], bc: nil, info: nil
-  end # FlowData
+  def hello, do: :world
 
   def main solve_info, output_callbcack do
     SolvICFlow.Output.initOServer output_callbcack
@@ -32,28 +20,26 @@ defmodule IncompressibleFlow do
   #fn solvFlow(json)
   #! args %{:parameter => %{}, :calc_info => %{}}
   defp solvFlow %{:parameter => parameter,
-                  :calc_info => %{:situation => situation,
-                                  :v_calc_info => v_calc_info,
-                                  :p_calc_info => p_calc_info}} do
+                  :calc_info => %{:max_ite_times => max_ite_times}} do
     flow_data = SolvICFlow.Init.genFlow parameter
-    solve_routine_fn = fn(ite_times, flow_data) ->
-      #NOTE: this functin is a bit complicated for tail recursion
-      if ite_times < situation[:max_ite_times] do
-        {result, new_flow_data} = try do
-                                    {true, solvStepFlow(v_calc_info, p_calc_info, flow_data)}
-                                  rescue
-                                    _ -> {false, nil}
-                                  end
-        if result do
-          solve_routine_fn ite_times+1, new_flow_data
-        else
-          {ite_times, flow_data}
-        end
+    solvFlowRecurse 0, flow_data, max_ite_times
+  end
+  defp solvFlowRecurse ite_times, flow_data, max_ite_times do
+    #NOTE: this functin's flow is a bit strange for tail recursion
+    if ite_times < max_ite_times do
+      {result, new_flow_data} = try do
+                                  {true, solvStepFlow(flow_data)}
+                                rescue
+                                  _ -> {false, nil}
+                                end
+      if result do
+        solvFlowRecurse ite_times+1, new_flow_data, max_ite_times
       else
-        {ite_times, flow_data}
+        {:error, ite_times, flow_data}
       end
+    else
+      {:ok, max_ite_times, flow_data}
     end
-    solve_routine_fn 0, flow_data
   end
 
   defp solvStepFlow flow_data do
@@ -64,6 +50,4 @@ defmodule IncompressibleFlow do
   end
 
 
-end # IncompressiveFlow
-
-alias IncompressibleFlow.FlowData, as: tagFlowData
+end # IncompressibleFlow

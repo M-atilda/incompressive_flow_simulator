@@ -14,13 +14,11 @@ defmodule IncompressibleFlowTest do
                                               :height => 1,
                                               :depth => 1,
                                               :space_step => 0.1,
-                                              :time_step => 0.1,
+                                              :CFL_number => 0.2,
                                               :init_velocity => [1, 0, 0],
                                               :init_pressure => 1,
                                               :Re => 50,
                                               :bc_strings => ["u=0;x=1"]},
-                              :calc_info => %{:situation => %{:max_ite_times => 10},
-                                              :v_calc_info => ,
-                                              :p_calc_info => }}, output_callbcack_fn
+                              :calc_info => %{:max_ite_times => 10}}, output_callbcack_fn
   end
 end

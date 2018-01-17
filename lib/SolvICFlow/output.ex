@@ -5,12 +5,12 @@
 #       at upper side, the behavior of sending is determined as a callback function
 
 defmodule SolvICFlow.Output do
-  @name g_output_server
+  @name :g_output_server
 
-  def emitFlowData %tagFlowData{u: x_vel,
-                                v: y_vel,
-                                w: z_vel,
-                                p: pressure}do
+  def emitFlowData %SolvICFlow.FlowData{u: x_vel,
+                                        v: y_vel,
+                                        w: z_vel,
+                                        p: pressure}do
     #TODO: padding
     velocity_status = List.zip List.flatten(x_vel), List.flatten(y_vel), List.flatten(z_vel)
     flow_status = List.zip velocity_status, pressure
@@ -30,9 +30,9 @@ defmodule SolvICFlow.Output do
   def outputServer output_callbcack do
     receive do
       {:emit, flow_status, _} ->
-        output_callbcack {:ok, flow_status}
+        output_callbcack.({:ok, flow_status})
       {:error, message, _} ->
-        output_callbcack {:error, message}
+        output_callbcack.({:error, message})
     end
     outputServer output_callbcack
   end

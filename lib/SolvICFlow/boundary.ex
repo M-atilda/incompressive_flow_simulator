@@ -11,18 +11,18 @@ defmodule SolvICFlow.BCInfo do
   #! value float
   defstruct cond_exp: nil, value: 0
 
-  def applyBCInfo position, %BCInfo{cond_exp: is_in?, value: val} do
-    if is_in?(position) do
+  defp applyBCInfo position, %SolvICFlow.BCInfo{cond_exp: is_in?, value: val} do
+    if is_in?.(position) do
       val
     else
       nil
     end
   end
-  def genBCField {x_range, y_range, z_range}, boundary_conditions do
-    for k <- z_range do
-      for j <- y_range do
-        for i <- x_range do
-          Enum.reduce, boundary_conditions, nil, fn(tag_bc, acm) ->
+  def genBCField {x_size, y_size, z_size}, boundary_conditions do
+    for k <- 0..(z_size-1) do
+      for j <- 0..(y_size-1) do
+        for i <- 0..(x_size-1) do
+          Enum.reduce boundary_conditions, nil, fn(tag_bc, acm) ->
             if acm != nil do
               acm
             else
@@ -33,61 +33,68 @@ defmodule SolvICFlow.BCInfo do
   end
 
   #! bc_info ["u=0;x=0,y=0", ...]
-  def genBCInfoMap bc_info do
+  def genBCInfoMap bc_info, space_step do
     keylist = bc_info
     |> Enum.map fn(str) ->
-      [val_str, cond_str] = String.split str, ";"
-      [kind, val_str] = String.split val_str "="
+      [val_exp_str, cond_str] = String.split str, ";"
+      [kind, val_str] = String.split val_exp_str, "="
       {kind, cond_str, String.to_float(val_str)} end
     |> Enum.map fn({kind, cond_str, val}) ->
-      {kind, bcInfoFactory(cond_str, val)} end
+      {kind, bcInfoFactory(cond_str, val, space_step)} end
     extract_bc_fn = fn(kind) ->
       {bcs, _rest} = Keyword.split keylist, [kind]
       bcs end
     Enum.reduce [:u, :v, :w, :p], %{}, fn(kind, acm) ->
-      Map.put acm, kind, extract_bc_fn(Atom.to_string(kind)) end
+      Map.put acm, kind, extract_bc_fn.(Atom.to_string(kind)) end
   end
-  def bcInfoFactory cond_str, val do
-    conds = String.split cond_str, ","
-    |> String.replace " ", ""
-    |> Enum.map condStr2Exp
+  defp bcInfoFactory cond_str, val, space_step do
+    cond_exp_list = String.split(cond_str, ",")
+                 |> String.replace(" ", "")
+                 |> Enum.map fn(str) -> condStr2Exp(str, space_step) end
     exp = fn(position) ->
-      Enum.reduce conds, true, fn(cond, acm) ->
-        acm && cond(position) end end
-    %IF.BCInfo{cond_exp: exp, value: val}
+      Enum.reduce cond_exp_list, true, fn(cond_exp, acm) ->
+        acm && cond_exp.(position) end end
+    %SolvICFlow.BCInfo{cond_exp: exp, value: val}
   end
-  defp condStr2Exp cond_str do
+  defp condStr2Exp cond_str, space_step do
     contains? = &(String.contains? cond_str, &1)
     {left, func} = cond do
-      contains? "<=" ->
+      contains?.("<=") ->
         {l, r} = String.split cond_str, "<="
-        {l, &(&1 <= String.to_float(r))}
-      contains? ">=" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 <= cell_num)}
+      contains?.(">=") ->
         {l, r} = String.split cond_str, ">="
-        {l, &(&1 >= String.to_float(r))}
-      contains? "=<" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 >= cell_num)}
+      contains?.("=<") ->
         {l, r} = String.split cond_str, "=<"
-        {l, &(&1 <= String.to_float(r))}
-      contains? "=>" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 <= cell_num)}
+      contains?.("=>") ->
         {l, r} = String.split cond_str, "=>"
-        {l, &(&1 >= String.to_float(r))}
-      contains? "=" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 >= cell_num)}
+      contains?.("=") ->
         {l, r} = String.split cond_str, "="
-        {l, &(&1 == String.to_float(r))}
-      contains? "<" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 == cell_num)}
+      contains?.("<") ->
         {l, r} = String.split cond_str, "<"
-        {l, &(&1 < String.to_float(r))}
-      contains? ">" ->
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 < cell_num)}
+      contains?.(">") ->
         {l, r} = String.split cond_str, ">"
-        {l, &(&1 > String.to_float(r))}
+        cell_num = round(String.to_float(r) / space_step)
+        {l, &(&1 > cell_num)}
     end
     cond do
       left == "x" ->
-        fn({x, _y, _z}) -> func(x) end
+        fn({x, _y, _z}) -> func.(x) end
       left == "y" ->
-        fn({_x, y, _z}) -> func(y) end
+        fn({_x, y, _z}) -> func.(y) end
       left == "z" ->
-        fn({_x, _y, z}) -> func(z) end
+        fn({_x, _y, z}) -> func.(z) end
     end
   end
 end # SolvICFlow.BCInfo

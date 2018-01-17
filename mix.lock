@@ -1,0 +1,2 @@
+%{"calc_p_server": {:git, "https://github.com/M-atilda/pressure_calculator.git", "2793d36219a9a8145130e0ba3bfc7fcdc4cc5eb3", []},
+  "calc_v_server": {:git, "https://github.com/M-atilda/velocity_calculator.git", "707f51f10519c17d9ba8af53a765e4d0480d26a6", []}}
