@@ -1,2 +1,2 @@
-%{"calc_p_server": {:git, "https://github.com/M-atilda/pressure_calculator.git", "c9367b5d1c88f169d4e436c8f53a6309dcfdc0b2", [branch: "plane_tuning"]},
-  "calc_v_server": {:git, "https://github.com/M-atilda/velocity_calculator.git", "249233e998d34c40e0222e5c19993c2847bc5feb", [branch: "plane_tuning"]}}
+%{"calc_p_server": {:git, "https://github.com/M-atilda/pressure_calculator.git", "e3506ed5c460d29709804f09fa709787f9ab3ee2", [branch: "plane_tuning"]},
+  "calc_v_server": {:git, "https://github.com/M-atilda/velocity_calculator.git", "103bb2d2c0839dc10211ee19418f009835c74406", [branch: "plane_tuning"]}}

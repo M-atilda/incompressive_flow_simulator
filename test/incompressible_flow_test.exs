@@ -14,7 +14,7 @@ defmodule IncompressibleFlowTest do
       case simbol do
         :ok ->
           IO.puts "[Info] current data."
-          SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
+          # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
         :error ->
           IO.puts "[Error] emitError is called."
           IO.inspect data
@@ -28,7 +28,7 @@ defmodule IncompressibleFlowTest do
                       :init_pressure => 1,
                       :Re => 50,
                       :bc_strings => ["u=1;x=0", "p=0;x=0", "u=0;x>4,x<8,y>4,y<8", "v=0;x>4,x<8,y>4,y<8"]},
-      :calc_info => %{:max_ite_times => 500}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 1}}, output_callbcack_fn
     
     IO.inspect flow_data
     IO.inspect status
