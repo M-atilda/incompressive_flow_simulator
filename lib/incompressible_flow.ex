@@ -79,13 +79,14 @@ defmodule IncompressibleFlow do
                       :init_velocity => [1, 0],
                       :init_pressure => 1,
                       :Re => 50,
-                      :bc_strings => ["u=1;x=0", "p=0;x=0", "u=0;x>4,x<4,y>4,y<8", "v=0;x>4,x<8,y>4,y<8"]},
+                      :bc_strings => ["u=1;x=0", "u=0;x>=4,x<=4,y>=4,y<=8", "v=0;x>=4,x<=8,y>=4,y<=8"]},
       :calc_info => %{:max_ite_times => 500}}, output_callbcack_fn
     
+    end_time = DateTime.utc_now
+    :timer.sleep 3000
     IO.inspect flow_data
     IO.inspect status
     IO.inspect ite_times
-    end_time = DateTime.utc_now
     IO.puts "start time: #{inspect start_time}"
     IO.puts "finish time: #{inspect end_time}"
   end

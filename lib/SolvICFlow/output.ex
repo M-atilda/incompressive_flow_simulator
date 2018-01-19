@@ -39,19 +39,24 @@ defmodule SolvICFlow.Output do
   def sampleCallbackImpl %SolvICFlow.FlowData{u: x_vel,
                                               v: y_vel,
                                               p: pressure}, {x_size, y_size}, space do
-    x_step = x_size / space
-    y_step = y_size / space
+    x_step = round(x_size / space)
+    y_step = round(y_size / space)
 
-    IO.puts "[Result] U field\n#{inspect genMiniField(x_vel, x_step, y_step, space)}"
-    IO.puts "[Result] V field\n#{inspect genMiniField(y_vel, x_step, y_step, space)}"
-    IO.puts "[Result] P field\n#{inspect genMiniField(pressure, x_step, y_step, space)}"
+    # IO.puts "[Result] U field\n#{inspect genMiniField(x_vel, x_step, y_step, space)}"
+    # IO.puts "[Result] V field\n#{inspect genMiniField(y_vel, x_step, y_step, space)}"
+    # IO.puts "[Result] P field\n#{inspect genMiniField(pressure, x_step, y_step, space)}"
+    IO.puts "[Info] current results."
+    genMiniField(x_vel, x_step, y_step, space)
+    genMiniField(y_vel, x_step, y_step, space)
+    genMiniField(pressure, x_step, y_step, space)
   end
   defp genMiniField field, x_step, y_step, space do
     half_space = round(space / 2)
-    for j <- 1..round(y_step-2) do
-      for i <- 1..round(x_step-2) do
+    for j <- 1..(y_step-2) do
+      for i <- 1..(x_step-2) do
         getAver field, {i*space+half_space, j*space+half_space}
       end
+      |> IO.inspect
     end
   end
   defp getAver f, {i, j} do
