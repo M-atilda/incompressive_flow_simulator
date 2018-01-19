@@ -6,6 +6,7 @@
 
 defmodule SolvICFlow.Output do
   @name :g_output_server
+  @compile [:native, {:hipe, [:verbose, :o3]}]
 
   def emitFlowData %SolvICFlow.FlowData{u: _x_vel,
                                         v: _y_vel,
@@ -42,9 +43,6 @@ defmodule SolvICFlow.Output do
     x_step = round(x_size / space)
     y_step = round(y_size / space)
 
-    # IO.puts "[Result] U field\n#{inspect genMiniField(x_vel, x_step, y_step, space)}"
-    # IO.puts "[Result] V field\n#{inspect genMiniField(y_vel, x_step, y_step, space)}"
-    # IO.puts "[Result] P field\n#{inspect genMiniField(pressure, x_step, y_step, space)}"
     IO.puts "[Info] current results."
     genMiniField(x_vel, x_step, y_step, space)
     genMiniField(y_vel, x_step, y_step, space)
@@ -58,6 +56,7 @@ defmodule SolvICFlow.Output do
       end
       |> IO.inspect
     end
+    IO.puts ""
   end
   defp getAver f, {i, j} do
     id(f, {i,j}) / 4 + (id(f, {i,j-1}) + id(f, {i,j+1}) + id(f, {i-1,j}) + id(f, {i+1,j})) / 8 + (id(f, {i-1,j-1}) + id(f, {i-1,j+1}) + id(f, {i+1,j-1}) + id(f, {i+1,j+1})) / 16

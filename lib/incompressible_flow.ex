@@ -10,6 +10,7 @@ defmodule IncompressibleFlow do
       :world
 
   """
+  @compile [:native, {:hipe, [:verbose, :o3]}]
   def hello, do: :world
 
   def main solve_info, output_callbcack do

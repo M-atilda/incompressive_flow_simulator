@@ -4,15 +4,15 @@
 #brief  update the velocity field following "Kawamura-Kuwahara" scheme (using artificial viscocity)
 
 defmodule SolvICFlow.Velocity do
+  @compile [:native, {:hipe, [:verbose, :o3]}]
 
   def update %SolvICFlow.FlowData{u: x_velocity,
                                   v: y_velocity,
                                   p: pressure,
-                                  bc: boundary_conditions,
+                                  bc: _boundary_conditions,
                                   info: information}=flow_data,
   {u_bc_field, v_bc_field} do
     velocitys_field = {x_velocity, y_velocity}
-    %{:x_size => x_size, :y_size => y_size} = information
 
     # u_bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:u]
     # v_bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:v]

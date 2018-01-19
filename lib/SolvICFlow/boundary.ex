@@ -15,14 +15,14 @@ defmodule SolvICFlow.BCInfo do
     if is_in?.(position) do
       val
     else
-      nil
+      false
     end
   end
   def genBCField {x_size, y_size}, boundary_conditions do
     for j <- 0..(y_size-1) do
       for i <- 0..(x_size-1) do
-        Enum.reduce(boundary_conditions, nil, fn(tag_bc, acm) ->
-          if acm != nil do
+        Enum.reduce(boundary_conditions, false, fn(tag_bc, acm) ->
+          if acm do
             acm
           else
             applyBCInfo {i,j}, tag_bc

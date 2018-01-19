@@ -5,14 +5,14 @@
 #      as iteration method, it uses 2-level MultiGrids (V cycle) and SOR method in it
 
 defmodule SolvICFlow.Pressure do
-
+  @compile [:native, {:hipe, [:verbose, :o3]}]
   def update %SolvICFlow.FlowData{u: x_velocity,
                                   v: y_velocity,
                                   p: pressure,
-                                  bc: boundary_conditions,
+                                  bc: _boundary_conditions,
                                   info: information}=flow_data,
     p_bc_field do
-    %{:x_size => x_size, :y_size => y_size} = information
+    %{:x_size => _x_size, :y_size => _y_size} = information
 
     # bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:p]
 

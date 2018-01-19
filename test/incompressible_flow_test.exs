@@ -28,9 +28,10 @@ defmodule IncompressibleFlowTest do
                       :init_pressure => 1,
                       :Re => 50,
                       :bc_strings => ["u=1;x=0", "u=0;x>=4,x<=8,y>=4,y<=8", "v=0;x>=4,x<=8,y>=4,y<=8"]},
-      :calc_info => %{:max_ite_times => 50}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 500}}, output_callbcack_fn
 
     :timer.sleep 3000
+    IO.puts ""
     IO.puts "[Info] final results."
     IO.inspect flow_data
     IO.inspect status
