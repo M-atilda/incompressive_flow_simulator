@@ -11,17 +11,17 @@ defmodule SolvICFlow.Velocity do
                                   p: pressure,
                                   bc: _boundary_conditions,
                                   info: information}=flow_data,
-  {u_bc_field, v_bc_field} do
+  {u_bc_field, v_bc_field}, name do
     velocitys_field = {x_velocity, y_velocity}
 
     # u_bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:u]
     # v_bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:v]
 
-    new_x_velocity = Task.async(fn -> CalcVServer.calcVel(:u, velocitys_field, pressure, u_bc_field, information) end)
-    new_y_velocity = Task.async(fn -> CalcVServer.calcVel(:v, velocitys_field, pressure, v_bc_field, information) end)
+    new_x_velocity = Task.async(fn -> CalcVServer.calcVel(:u, velocitys_field, pressure, u_bc_field, information, name) end)
+    new_y_velocity = Task.async(fn -> CalcVServer.calcVel(:v, velocitys_field, pressure, v_bc_field, information, name) end)
 
     %SolvICFlow.FlowData{ flow_data |
-                          u: Task.await(new_x_velocity, 60000),
-                          v: Task.await(new_y_velocity, 60000)}
+                          u: Task.await(new_x_velocity),
+                          v: Task.await(new_y_velocity)}
   end
 end # SolvICFlow.Velocity

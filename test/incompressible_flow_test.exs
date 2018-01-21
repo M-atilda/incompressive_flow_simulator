@@ -4,12 +4,12 @@ defmodule IncompressibleFlowTest do
   @tag timeout: 10800000
 
   test "main routine" do
-    CalcPServer.genCalcServer %{:max_ite_times => 100,
-                                :error_p => 0.0001,
-                                :omega => 1,
-                                :max_res_ratio => 0.5}
-    CalcVServer.genCalcServer(:u)
-    CalcVServer.genCalcServer(:v)
+    CalcPServer.genCalcServer "test", %{:max_ite_times => 100,
+                                        :error_p => 0.0001,
+                                        :omega => 1,
+                                        :max_res_ratio => 0.5}
+    CalcVServer.genCalcServer "test", :u
+    CalcVServer.genCalcServer "test", :v
     output_callbcack_fn = fn({simbol, data}) ->
       case simbol do
         :ok ->
@@ -19,7 +19,7 @@ defmodule IncompressibleFlowTest do
           IO.puts "[Error] emitError is called."
           IO.inspect data
       end end
-    {status, ite_times, flow_data} = IncompressibleFlow.main %{
+    {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
                       :space_step => 0.1,

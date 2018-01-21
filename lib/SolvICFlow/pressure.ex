@@ -11,12 +11,12 @@ defmodule SolvICFlow.Pressure do
                                   p: pressure,
                                   bc: _boundary_conditions,
                                   info: information}=flow_data,
-    p_bc_field do
+    p_bc_field, name do
     %{:x_size => _x_size, :y_size => _y_size} = information
 
     # bc_field = SolvICFlow.BCInfo.genBCField {x_size, y_size}, boundary_conditions[:p]
 
-    {status, new_pressure} = CalcPServer.calcPre {x_velocity, y_velocity}, pressure, p_bc_field, information
+    {status, new_pressure} = CalcPServer.calcPre {x_velocity, y_velocity}, pressure, p_bc_field, information, name
     if status != :ok, do: IO.puts "[Info] pressure culculation hasn't converged in designated iteration times."
 
     %SolvICFlow.FlowData{ flow_data | p: new_pressure }

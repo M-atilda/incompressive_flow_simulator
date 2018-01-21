@@ -5,24 +5,23 @@
 #       at upper side, the behavior of sending is determined as a callback function
 
 defmodule SolvICFlow.Output do
-  @name :g_output_server
   @compile [:native, {:hipe, [:verbose, :o3]}]
 
   def emitFlowData %SolvICFlow.FlowData{u: _x_vel,
                                         v: _y_vel,
-                                        p: _pressure}=flow_data do
+                                        p: _pressure}=flow_data, name do
     #TODO: padding
-    send :global.whereis_name(@name), {:emit, flow_data, self}
+    send :global.whereis_name(name), {:emit, flow_data, self}
     flow_data
   end
 
-  def emitError message do
-    send :global.whereis_name(@name), {:error, message, self}
+  def emitError name, message do
+    send :global.whereis_name(name), {:error, message, self}
   end
 
-  def initOServer output_callbcack do
+  def genOServer name, output_callbcack do
     pid = spawn(__MODULE__, :outputServer, [output_callbcack])
-    :global.register_name(@name, pid)
+    :global.register_name(name, pid)
   end
 
 
