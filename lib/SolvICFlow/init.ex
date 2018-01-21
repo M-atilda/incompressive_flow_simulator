@@ -11,7 +11,7 @@ defmodule SolvICFlow.Init do
                 :height => height,
                 :space_step => space_step,
                 :CFL_number => cfl_number,
-                :init_velocity => [u_val, v_val],
+                :init_velocity => {u_val, v_val},
                 :init_pressure => p_val,
                 :Re => re,
                 :bc_strings => bc_strings} do
@@ -19,8 +19,8 @@ defmodule SolvICFlow.Init do
     x_size = if (rem(round(width/space_step)+1, 2) != 0), do: round(width/space_step)+1, else: round(width/space_step)
     y_size = if (rem(round(height/space_step)+1, 2) != 0), do: round(height/space_step)+1, else: round(height/space_step)
     gen_field_fn = fn(val) ->
-      List.duplicate(
-        List.duplicate(val, x_size), y_size) end
+      Tuple.duplicate(
+        Tuple.duplicate(val, x_size), y_size) end
     %SolvICFlow.FlowData{u: gen_field_fn.(u_val),
                          v: gen_field_fn.(v_val),
                          p: gen_field_fn.(p_val),

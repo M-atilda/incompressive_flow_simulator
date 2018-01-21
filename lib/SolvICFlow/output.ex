@@ -62,7 +62,7 @@ defmodule SolvICFlow.Output do
     id(f, {i,j}) / 4 + (id(f, {i,j-1}) + id(f, {i,j+1}) + id(f, {i-1,j}) + id(f, {i+1,j})) / 8 + (id(f, {i-1,j-1}) + id(f, {i-1,j+1}) + id(f, {i+1,j-1}) + id(f, {i+1,j+1})) / 16
   end
   defp id field, {i,j} do
-    Enum.at(Enum.at(field, j), i)
+    elem(elem(field, j), i)
   end
 
 end #SolvICFlow.Output

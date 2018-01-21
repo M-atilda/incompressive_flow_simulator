@@ -28,7 +28,10 @@ defmodule SolvICFlow.BCInfo do
             applyBCInfo {i,j}, tag_bc
           end
         end)
-      end end
+      end
+      |> List.to_tuple
+    end
+    |> List.to_tuple
   end
 
   #! bc_info ["u=0;x=0,y=0", ...]
