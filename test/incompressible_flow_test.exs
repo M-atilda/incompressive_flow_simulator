@@ -14,7 +14,7 @@ defmodule IncompressibleFlowTest do
       case simbol do
         :ok ->
           IO.puts "[Info] current data."
-          SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
+          # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
         :error ->
           IO.puts "[Error] emitError is called."
           IO.inspect data

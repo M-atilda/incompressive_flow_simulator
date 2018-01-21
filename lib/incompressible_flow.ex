@@ -62,11 +62,16 @@ defmodule IncompressibleFlow do
   end
 
   def testMain do
+    CalcPServer.genCalcServer %{:max_ite_times => 100,
+                                :error_p => 0.0001,
+                                :omega => 1,
+                                :max_res_ratio => 0.5}
+    CalcVServer.genCalcServer(:u)
     output_callbcack_fn = fn({simbol, data}) ->
       case simbol do
         :ok ->
           IO.puts "[Info] current data."
-          SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
+          # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
         :error ->
           IO.puts "[Error] emitError is called."
           IO.inspect data
