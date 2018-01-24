@@ -1,4 +1,4 @@
-OB#file   result.ex
+OBOB#file   result.ex
 #author mi-na
 #date   18/01/24
 
@@ -21,8 +21,9 @@ defmodule SolvICFlow.Result do
           send client, {:progress, ite_times, self}
           result_builder path, ite_times, working_tasks, remaining
         {:result, data, _output_server} ->
+          if rem(ite_times, 100) == 0, do: File.mkdir(path <> "/" <> Integer.to_string(div ite_times, 100))
           write_fn = fn ->
-            {:ok, file} = File.open (path <> "/" <> Integer.to_string(ite_times)), [:write]
+            {:ok, file} = File.open (path <> "/" <> Integer.to_string(div ite_times, 100) <> "/" <> Integer.to_string(ite_times)), [:write]
             #json data allows only list (tuple is invalid)
             map_data = Enum.reduce([:u, :v, :p], %{}, fn(kind, acm) ->
               Map.put acm, kind, Enum.map(Tuple.to_list(data[kind]), &(Tuple.to_list &1))

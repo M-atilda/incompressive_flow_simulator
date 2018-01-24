@@ -19,7 +19,8 @@ defmodule IncompressibleFlowTest do
     #       IO.puts "[Error] emitError is called."
     #       IO.inspect data
     #   end end
-    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
+    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result
+    "
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
