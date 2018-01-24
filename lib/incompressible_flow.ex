@@ -99,7 +99,7 @@ defmodule IncompressibleFlow do
   end
 
   def genResultBuilder name, path do
-    SolvICFlow.genRBuilder name, path
+    SolvICFlow.Result.genRBuilder name, path
   end
 
 
