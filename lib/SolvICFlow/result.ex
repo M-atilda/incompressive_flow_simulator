@@ -1,4 +1,4 @@
-OBOB#file   result.ex
+OBOBOB#file   result.ex
 #author mi-na
 #date   18/01/24
 
@@ -31,6 +31,7 @@ defmodule SolvICFlow.Result do
             {:ok, json_data} = Poison.encode map_data
             IO.puts "[Info] writing the #{inspect ite_times}th data..."
             IO.binwrite file, json_data
+            File.close file
           end
           result_builder path, ite_times+1, working_tasks, remaining ++ [write_fn]
         {:finish, client} ->
