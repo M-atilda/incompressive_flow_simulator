@@ -55,6 +55,7 @@ defmodule IncompressibleFlow do
   end
 
   defp solvFlowStep name, flow_data, {u_bc_field, v_bc_field, p_bc_field} do
+    :timer.sleep 1000
     flow_data
     |> SolvICFlow.Velocity.update({u_bc_field, v_bc_field}, name)
     |> SolvICFlow.Pressure.update(p_bc_field, name)
@@ -62,12 +63,6 @@ defmodule IncompressibleFlow do
   end
 
   def testMain do
-    CalcPServer.genCalcServer "test", %{:max_ite_times => 100,
-                                        :error_p => 0.0001,
-                                        :omega => 1,
-                                        :max_res_ratio => 0.5}
-    CalcVServer.genCalcServer "test", :u
-    CalcVServer.genCalcServer "test", :v
     output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,

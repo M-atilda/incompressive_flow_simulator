@@ -1,7 +1,7 @@
 defmodule IncompressibleFlowTest do
   use ExUnit.Case
   doctest IncompressibleFlow
-  @tag timeout: 10800000
+  @tag timeout: 43200000
 
   test "main routine" do
     CalcPServer.genCalcServer "test", %{:max_ite_times => 100,
@@ -24,12 +24,12 @@ defmodule IncompressibleFlowTest do
       :parameter => %{:width => 40,
                       :height => 20,
                       :space_step => 0.1,
-                      :CFL_number => 0.2,
+                      :CFL_number => 0.1,
                       :init_velocity => {1.0, 0.0},
                       :init_pressure => 1.0,
                       :Re => 50,
-                      :bc_strings => ["u=1.0;x=0", "u=0.0;x>=4,x<=8,y>=4,y<=8", "v=0.0;x>=4,x<=8,y>=4,y<=8"]},
-      :calc_info => %{:max_ite_times => 50}}, output_callbcack_fn
+                      :bc_strings => ["u=1.0;x=0", "u=0.0;x>=12,x<=16,y>=12,y<=16", "v=0.0;x>=12,x<=16,y>=12,y<=16"]},
+      :calc_info => %{:max_ite_times => 8000}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000
@@ -46,7 +46,7 @@ defmodule IncompressibleFlowTest do
       true
     else
       IO.puts "[Info] waiting for dumping the results... #{inspect DateTime.utc_now}"
-      :timer.sleep 10000
+      :timer.sleep 3600000
       waitUntilFinish
     end
   end
