@@ -7,21 +7,22 @@
 defmodule SolvICFlow.Output do
   @compile [:native, {:hipe, [:verbose, :o3]}]
 
-  def emitFlowData %SolvICFlow.FlowData{u: _x_vel,
-                                        v: _y_vel,
-                                        p: _pressure}=flow_data, name do
+  def emitFlowData %SolvICFlow.FlowData{u: x_vel,
+                                        v: y_vel,
+                                        p: pressure}=flow_data, name do
     #TODO: padding
-    send :global.whereis_name(name), {:emit, flow_data, self}
+    data = %{:u => x_vel, :v => y_vel, :p => pressure}
+    send :global.whereis_name(name <> "_output"), {:emit, data, self}
     flow_data
   end
 
   def emitError name, message do
-    send :global.whereis_name(name), {:error, message, self}
+    send :global.whereis_name(name <> "_output"), {:error, message, self}
   end
 
   def genOServer name, output_callbcack do
     pid = spawn(__MODULE__, :outputServer, [output_callbcack])
-    :global.register_name(name, pid)
+    :global.register_name(name <> "_output", pid)
   end
 
 
@@ -36,9 +37,9 @@ defmodule SolvICFlow.Output do
   end
 
 
-  def sampleCallbackImpl %SolvICFlow.FlowData{u: x_vel,
-                                              v: y_vel,
-                                              p: pressure}, {x_size, y_size}, space do
+  def sampleCallbackImpl %{u: x_vel,
+                           v: y_vel,
+                           p: pressure}, {x_size, y_size}, space do
     x_step = round(x_size / space)
     y_step = round(y_size / space)
 

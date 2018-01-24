@@ -39,7 +39,9 @@ defmodule IncompressibleFlow do
                                   {true, solvFlowStep(name, flow_data, bc_fields)}
                                 rescue
                                   err ->
+                                    IO.inspect err
                                     SolvICFlow.Output.emitError name, inspect(err)
+                                  
                                   {false, nil}
                                 end
       if result do

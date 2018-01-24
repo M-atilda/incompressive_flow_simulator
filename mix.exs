@@ -21,6 +21,7 @@ defmodule IncompressibleFlow.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:poison, "~> 3.0"},
       {:calc_p_server, git: "https://github.com/M-atilda/pressure_calculator.git"},
       {:calc_v_server, git: "https://github.com/M-atilda/velocity_calculator.git"}
       # {:calc_p_server, git: "https://github.com/M-atilda/pressure_calculator.git", tag: "v_1.1"},
