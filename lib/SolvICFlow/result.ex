@@ -1,4 +1,4 @@
-#file   result.ex
+OB#file   result.ex
 #author mi-na
 #date   18/01/24
 
@@ -28,6 +28,7 @@ defmodule SolvICFlow.Result do
               Map.put acm, kind, Enum.map(Tuple.to_list(data[kind]), &(Tuple.to_list &1))
             end)
             {:ok, json_data} = Poison.encode map_data
+            IO.puts "[Info] writing the #{inspect ite_times}th data..."
             IO.binwrite file, json_data
           end
           result_builder path, ite_times+1, working_tasks, remaining ++ [write_fn]
