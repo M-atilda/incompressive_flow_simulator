@@ -61,6 +61,7 @@ defmodule SolvICFlow.Result do
   end
 
   def genRBuilder name, path do
+    File.mkdir(path <> "/0")
     pid = spawn(__MODULE__, :result_builder, [path, 1, [], []])
     :global.register_name(name <> "_result", pid)
     pid
