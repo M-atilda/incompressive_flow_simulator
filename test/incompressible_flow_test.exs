@@ -19,8 +19,8 @@ defmodule IncompressibleFlowTest do
     #       IO.puts "[Error] emitError is called."
     #       IO.inspect data
     #   end end
-    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result
-    "
+    SolvICFlow.Result.genRBuilder "test", "result"
+    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
@@ -30,7 +30,7 @@ defmodule IncompressibleFlowTest do
                       :init_pressure => 1.0,
                       :Re => 50,
                       :bc_strings => ["u=1.0;x=0", "u=0.0;x>=12,x<=16,y>=12,y<=16", "v=0.0;x>=12,x<=16,y>=12,y<=16"]},
-      :calc_info => %{:max_ite_times => 8000}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 50}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000
@@ -47,7 +47,7 @@ defmodule IncompressibleFlowTest do
       true
     else
       IO.puts "[Info] waiting for dumping the results... #{inspect DateTime.utc_now}"
-      :timer.sleep 3600000
+      :timer.sleep 60000
       waitUntilFinish
     end
   end

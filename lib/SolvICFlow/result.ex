@@ -1,4 +1,4 @@
-OBOBOB#file   result.ex
+#file   result.ex
 #author mi-na
 #date   18/01/24
 

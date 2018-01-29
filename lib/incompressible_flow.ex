@@ -83,7 +83,7 @@ defmodule IncompressibleFlow do
 
     waitUntilFinish
     :timer.sleep 3000
-    
+
     IO.puts ""
     IO.inspect status
     IO.inspect ite_times
