@@ -22,16 +22,18 @@ defmodule SolvICFlow.Result do
           result_builder path, ite_times, working_tasks, remaining
         {:result, data, _output_server} ->
           if rem(ite_times, 100) == 0, do: File.mkdir(path <> "/" <> Integer.to_string(div ite_times, 100))
-          write_fn = fn ->
-            {:ok, file} = File.open (path <> "/" <> Integer.to_string(div ite_times, 100) <> "/" <> Integer.to_string(ite_times)), [:write]
-            #json data allows only list (tuple is invalid)
-            map_data = Enum.reduce([:u, :v, :p], %{}, fn(kind, acm) ->
-              Map.put acm, kind, Enum.map(Tuple.to_list(data[kind]), &(Tuple.to_list &1))
-            end)
-            {:ok, json_data} = Poison.encode map_data
-            IO.puts "[Info] writing the #{inspect ite_times}th data..."
-            IO.binwrite file, json_data
-            File.close file
+          if rem(ite_times, 10) == 0, do
+            write_fn = fn ->
+              {:ok, file} = File.open (path <> "/" <> Integer.to_string(div ite_times, 100) <> "/" <> Integer.to_string(ite_times)), [:write]
+              #json data allows only list (tuple is invalid)
+              map_data = Enum.reduce([:u, :v, :p], %{}, fn(kind, acm) ->
+                Map.put acm, kind, Enum.map(Tuple.to_list(data[kind]), &(Tuple.to_list &1))
+              end)
+              {:ok, json_data} = Poison.encode map_data
+              IO.puts "[Info] writing the #{inspect ite_times}th data..."
+              IO.binwrite file, json_data
+              File.close file
+            end
           end
           result_builder path, ite_times+1, working_tasks, remaining ++ [write_fn]
         {:finish, client} ->

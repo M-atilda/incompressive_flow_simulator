@@ -55,7 +55,7 @@ defmodule IncompressibleFlow do
   end
 
   defp solvFlowStep name, flow_data, {u_bc_field, v_bc_field, p_bc_field} do
-    :timer.sleep 600 # for writing buffer
+    #:timer.sleep 600 # for writing buffer
     flow_data
     |> SolvICFlow.Velocity.update({u_bc_field, v_bc_field}, name)
     |> SolvICFlow.Pressure.update(p_bc_field, name)
