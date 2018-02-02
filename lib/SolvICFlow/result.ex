@@ -22,8 +22,8 @@ defmodule SolvICFlow.Result do
           result_builder path, ite_times, working_tasks, remaining
         {:result, data, _output_server} ->
           if rem(ite_times, 100) == 0, do: File.mkdir(path <> "/" <> Integer.to_string(div ite_times, 100))
-          if rem(ite_times, 10) == 0 do
-            write_fn = fn ->
+          write_fn = fn ->
+            if rem(ite_times, 10) == 0 do
               {:ok, file} = File.open (path <> "/" <> Integer.to_string(div ite_times, 100) <> "/" <> Integer.to_string(ite_times)), [:write]
               #json data allows only list (tuple is invalid)
               map_data = Enum.reduce([:u, :v, :p], %{}, fn(kind, acm) ->
