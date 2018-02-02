@@ -24,13 +24,13 @@ defmodule IncompressibleFlowTest do
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
-                      :space_step => 0.1,
-                      :CFL_number => 0.1,
+                      :space_step => 0.05,
+                      :CFL_number => 0.2,
                       :init_velocity => {1.0, 0.0},
-                      :init_pressure => 1.0,
-                      :Re => 50,
+                      :init_pressure => 0,
+                      :Re => 100,
                       :bc_strings => ["u=1.0;x=0", "u=0.0;x>=12,x<=16,y>=12,y<=16", "v=0.0;x>=12,x<=16,y>=12,y<=16"]},
-      :calc_info => %{:max_ite_times => 50}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 1000}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000

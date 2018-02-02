@@ -1,3 +1,5 @@
-%{"calc_p_server": {:git, "https://github.com/M-atilda/pressure_calculator.git", "67efe40745d54d6a417e4044940d3d8de0465a9e", []},
-  "calc_v_server": {:git, "https://github.com/M-atilda/velocity_calculator.git", "0d5988a8bd9ddb0bb3d55259cec6385a523f6d26", []},
-  "poison": {:hex, :poison, "3.1.0", "d9eb636610e096f86f25d9a46f35a9facac35609a7591b3be3326e99a0484665", [:mix], [], "hexpm"}}
+%{
+  "calc_p_server": {:git, "https://github.com/M-atilda/pressure_calculator.git", "67efe40745d54d6a417e4044940d3d8de0465a9e", []},
+  "calc_v_server": {:git, "https://github.com/M-atilda/velocity_calculator.git", "b242780de14c584122a3cdf9ed58733adffda8d6", []},
+  "poison": {:hex, :poison, "3.1.0", "d9eb636610e096f86f25d9a46f35a9facac35609a7591b3be3326e99a0484665", [:mix], [], "hexpm"},
+}
