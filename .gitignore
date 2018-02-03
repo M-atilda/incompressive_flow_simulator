@@ -1,4 +1,4 @@
-OB# The directory Mix will write compiled artifacts to.
+# The directory Mix will write compiled artifacts to.
 /_build/
 
 # If you run "mix test --cover", coverage assets end up here.
@@ -21,3 +21,4 @@ erl_crash.dump
 
 # Test's results
 result/*
+recover/*

@@ -55,7 +55,7 @@ defmodule IncompressibleFlow do
   end
 
   defp solvFlowStep name, flow_data, {u_bc_field, v_bc_field, p_bc_field} do
-    #:timer.sleep 600 # for writing buffer
+    :timer.sleep 100 # for writing buffer
     flow_data
     |> SolvICFlow.Velocity.update({u_bc_field, v_bc_field}, name)
     |> SolvICFlow.Pressure.update(p_bc_field, name)
@@ -69,7 +69,17 @@ defmodule IncompressibleFlow do
                                         :max_res_ratio => 0.5}
     CalcVServer.genCalcServer "test", :u
     CalcVServer.genCalcServer "test", :v
-    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
+    # output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
+    output_callbcack_fn = fn({simbol, data}) ->
+      case simbol do
+        :ok ->
+          # IO.puts "[Info] current data."
+          # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
+          nil
+        :error ->
+          IO.puts "[Error] emitError is called."
+          IO.inspect data
+      end end
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
@@ -77,9 +87,9 @@ defmodule IncompressibleFlow do
                       :CFL_number => 0.1,
                       :init_velocity => {1.0, 0.0},
                       :init_pressure => 0,
-                      :Re => 80,
-                      :bc_strings => ["u=1.0;x=0", "u=0.0;x>=12,x<=13,y>=12,y<=13", "v=0.0;x>=12,x<=13,y>=12,y<=13"]},
-      :calc_info => %{:max_ite_times => 50000}}, output_callbcack_fn
+                      :Re => 70,
+                      :bc_strings => ["u=1.0;x=0", "p=0.0;x=0", "u=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "v=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5"]},
+      :calc_info => %{:max_ite_times => 16000}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000
