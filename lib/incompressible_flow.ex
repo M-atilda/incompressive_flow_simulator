@@ -69,17 +69,18 @@ defmodule IncompressibleFlow do
                                         :max_res_ratio => 0.5}
     CalcVServer.genCalcServer "test", :u
     CalcVServer.genCalcServer "test", :v
-    # output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
-    output_callbcack_fn = fn({simbol, data}) ->
-      case simbol do
-        :ok ->
-          # IO.puts "[Info] current data."
-          # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
-          nil
-        :error ->
-          IO.puts "[Error] emitError is called."
-          IO.inspect data
-      end end
+    IncompressibleFlow.genResultBuilder "test", "result/sample"
+    output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
+    # output_callbcack_fn = fn({simbol, data}) ->
+    #   case simbol do
+    #     :ok ->
+    #       # IO.puts "[Info] current data."
+    #       # SolvICFlow.Output.sampleCallbackImpl data, {400, 200}, 20
+    #       nil
+    #     :error ->
+    #       IO.puts "[Error] emitError is called."
+    #       IO.inspect data
+    #   end end
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,

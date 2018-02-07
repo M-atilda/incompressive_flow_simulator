@@ -44,7 +44,7 @@ defmodule SolvICFlow.BCInfo do
         String.contains?(val_str, ".") ->
           {kind, cond_str, String.to_float(val_str)}
         val_str == "null" ->
-          val_str
+          {kind, cond_str, val_str}
         true ->
           {kind, cond_str, String.to_integer(val_str)}
       end end)
