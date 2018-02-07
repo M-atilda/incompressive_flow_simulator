@@ -23,9 +23,9 @@ defmodule IncompressibleFlow.Mixfile do
     [
       {:poison, "~> 3.0"},
       {:calc_p_server, git: "https://github.com/M-atilda/pressure_calculator.git"},
-      # {:calc_v_server, git: "https://github.com/M-atilda/velocity_calculator.git"}
+      {:calc_v_server, git: "https://github.com/M-atilda/velocity_calculator.git"}
       # {:calc_p_server, git: "https://github.com/M-atilda/pressure_calculator.git", tag: "v_1.1"},
-      {:calc_v_server, git: "https://github.com/M-atilda/velocity_calculator.git", tag: "v_1.3"}
+      # {:calc_v_server, git: "https://github.com/M-atilda/velocity_calculator.git", tag: "v_1.3"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]
