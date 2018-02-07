@@ -84,13 +84,13 @@ defmodule IncompressibleFlow do
     {status, ite_times, flow_data} = IncompressibleFlow.main "test", %{
       :parameter => %{:width => 40,
                       :height => 20,
-                      :space_step => 0.05,
-                      :CFL_number => 0.1,
+                      :space_step => 0.1,
+                      :CFL_number => 0.2,
                       :init_velocity => {1.0, 0.0},
                       :init_pressure => 0,
                       :Re => 70,
                       :bc_strings => ["u=1.0;x<=0.1", "v=0.0;x<=0.1", "p=0.0;x<=0.1", "p=0.0;x>=39.9", "p=0.0;y<=0.1", "p=0.0;y>=19.9", "u=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "v=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "p=null;x>=9.5,x<=10.5,y>=9.5,y<=10.5"]},
-      :calc_info => %{:max_ite_times => 16000}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 8000}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000
