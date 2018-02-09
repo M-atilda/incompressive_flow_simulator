@@ -88,7 +88,7 @@ defmodule IncompressibleFlow do
                       :init_velocity => {1.0, 0.0},
                       :init_pressure => 0,
                       :Re => 70,
-                      :bc_strings => ["u=1.0;x<=0.1", "v=0.0;x<=0.1", "p=0.0;x<=0.1", "p=0.0;x>=39.9", "p=0.0;y<=0.1", "p=0.0;y>=19.9", "u=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "v=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "p=null;x>=9.5,x<=10.5,y>=9.5,y<=10.5"]},
+                      :bc_strings => ["u=1.0;x<=0.1", "v=0.0;x<=0.1", "p=0.0;x=0.0", "p=0.0;x=40.0", "p=0.0;y=0.0", "p=0.0;y=20.0", "u=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "v=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "p=null;x>=9.5,x<=10.5,y>=9.5,y<=10.5"]},
       :calc_info => %{:max_ite_times => 8000}}, output_callbcack_fn
 
     waitUntilFinish
