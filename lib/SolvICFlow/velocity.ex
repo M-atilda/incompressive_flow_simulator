@@ -21,7 +21,7 @@ defmodule SolvICFlow.Velocity do
     new_y_velocity = Task.async(fn -> CalcVServer.calcVel(:v, velocitys_field, pressure, v_bc_field, information, name) end)
 
     %SolvICFlow.FlowData{ flow_data |
-                          u: Task.await(new_x_velocity, 600000),
-                          v: Task.await(new_y_velocity, 600000)}
+                          u: Task.await(new_x_velocity, 6000000),
+                          v: Task.await(new_y_velocity, 6000000)}
   end
 end # SolvICFlow.Velocity

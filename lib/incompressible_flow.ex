@@ -68,7 +68,7 @@ defmodule IncompressibleFlow do
                                         :max_res_ratio => 0.5}
     CalcVServer.genCalcServer "test", :u
     CalcVServer.genCalcServer "test", :v
-    IncompressibleFlow.genResultBuilder "test", "result/sample"
+    # IncompressibleFlow.genResultBuilder "test", "result/sample"
     output_callbcack_fn = SolvICFlow.Result.genJsonOutputCallback "test", "result"
     # output_callbcack_fn = fn({simbol, data}) ->
     #   case simbol do
@@ -89,7 +89,7 @@ defmodule IncompressibleFlow do
                       :init_pressure => 0,
                       :Re => 70,
                       :bc_strings => ["u=1.0;x<=0.1", "v=0.0;x<=0.1", "p=0.0;x=0.0", "p=0.0;x=40.0", "p=0.0;y=0.0", "p=0.0;y=20.0", "u=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "v=0.0;x>=9.5,x<=10.5,y>=9.5,y<=10.5", "p=null;x>=9.5,x<=10.5,y>=9.5,y<=10.5"]},
-      :calc_info => %{:max_ite_times => 8000}}, output_callbcack_fn
+      :calc_info => %{:max_ite_times => 30000}}, output_callbcack_fn
 
     waitUntilFinish
     :timer.sleep 3000
